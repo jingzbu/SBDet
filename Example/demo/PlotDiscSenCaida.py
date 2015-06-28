@@ -1,6 +1,10 @@
+from __future__ import print_function, division, absolute_import
+import sys
+sys.path.insert(0, "../../")
+
 from SBDet import *
 import pylab as P
-import sys
+
 # tr = zload('./w1_influe_res.pkz')
 
 # w1_set = tr['w1_set']
