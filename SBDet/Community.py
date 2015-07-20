@@ -5,6 +5,7 @@ from __future__ import print_function, division, absolute_import
 import sys
 from subprocess import check_call
 from .Util import np, sp
+from scipy.sparse import csc_matrix, lil_matrix, coo_matrix
 
 
 # def com_det(A, r_vec, w, lamb, out):
@@ -74,7 +75,6 @@ def com_det_reg(A, r_vec, w1, w2, lamb, out):
     W = np.vstack([np.hstack([P0, 0.5 * qv]),
                   np.hstack([0.5 * qv.T, zerov])])
     export_max_cut(W, out)
-    W = sp.sparse.coo_matrix(W)
     return P0, q0, W
 
 
