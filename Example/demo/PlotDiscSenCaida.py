@@ -227,6 +227,3 @@ P.show()
 #         node_color=[nc[int(i)] for i in ref_sol],
 #         edge_color='grey',
 #         pic_name='det.pdf')
-
-
-
