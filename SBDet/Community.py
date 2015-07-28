@@ -5,7 +5,6 @@ from __future__ import print_function, division, absolute_import
 import sys
 from subprocess import check_call
 from .Util import np, sp
-from scipy.sparse import csc_matrix, lil_matrix, coo_matrix
 
 
 # def com_det(A, r_vec, w, lamb, out):
@@ -37,7 +36,7 @@ from scipy.sparse import csc_matrix, lil_matrix, coo_matrix
 
 
 def com_det_reg(A, r_vec, w1, w2, lamb, out):
-    """ Modularity-based community detection with regularization term
+    """ Modularity-based community detection with regularizatoin term
 
     The problem is defined as:
         M = (0.5 / m) A - (0.5 / m^2) deg * deg'
@@ -51,7 +50,7 @@ def com_det_reg(A, r_vec, w1, w2, lamb, out):
     Parameters
     ---------------
     A : symmetric matrix.
-        Adjacent matrix of correlation graph
+        Adjcant matrix of correlation graph
     r_vec : list
         interaction of each node with pivot nodes
 

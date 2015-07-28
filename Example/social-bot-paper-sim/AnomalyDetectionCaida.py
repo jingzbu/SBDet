@@ -6,7 +6,7 @@ from SBDet import *
 import pylab as P
 from subprocess import check_call
 
-bg_sigs, bg_nodes = parseToCoo('loc6-20070501-2055-40.sigs',
+bg_sigs, bg_nodes = parseToCoo('capture20110816.binetflow.slice_13_1.sigs',
         undirected=True)
 # bg_sigs = bg_sigs[0:300]
 bg_sigs = bg_sigs[0:360]

@@ -11,10 +11,10 @@ import networkx as nx
 ###############################################################
 
 # Read background SIGs
-bg_sigs, bg_nodes = parseToCoo('capture20110816.binetflow.10s.sigs',
+bg_sigs, bg_nodes = parseToCoo('capture20110816.binetflow.slice_13_1.sigs',
         undirected=True)
 
-bg_sigs = bg_sigs[0:500]
+bg_sigs = bg_sigs[0:2000]
 
 deg_samples = mg_sample(len(bg_nodes), bg_sigs, 100, 50)
 ER_para, ER_lk = mle(deg_samples, 'ER')
@@ -48,7 +48,7 @@ divs = monitor_deg_dis(mix_sigs, 'ER', (ER_para, 1e-10), minlength=None)
 
 
 
-THRE = 0.02
+THRE = 0.01
 
 # The index of suspicious SIGs
 det_idx = [i for i, div in enumerate(divs) if div > THRE]
@@ -66,12 +66,12 @@ print(bot_adjs)
 # Step 3. Botnet Discovery
 ###############################################################
 
-pivot_th = 0.11
+pivot_th = 0.01
 
-cor_th = 0.3
+cor_th = 0.005
 
 w1 = 2
-w2 = 0.01
+w2 = 0.001
 
 lamb = 0
 
