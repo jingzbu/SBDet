@@ -14,9 +14,9 @@ import networkx as nx
 bg_sigs, bg_nodes = parseToCoo('capture20110816.binetflow.slice_13_1.sigs',
         undirected=True)
 
-bg_sigs = bg_sigs[0:2000]
+bg_sigs = bg_sigs[1:10]
 
-deg_samples = mg_sample(len(bg_nodes), bg_sigs, 100, 50)
+deg_samples = mg_sample(len(bg_nodes), bg_sigs, 9, 20)
 ER_para, ER_lk = mle(deg_samples, 'ER')
 
 print(ER_para, ER_lk)
@@ -36,7 +36,7 @@ botnet_sigs, botnet_nodes = parseToCoo('ddostrace.sigs',
                                        undirected=True)
 
 mix_sigs, mix_nodes = mix_append((bg_sigs, bg_nodes),
-        (botnet_sigs, botnet_nodes), 200)
+        (botnet_sigs, botnet_nodes), 0)
 
 
 
@@ -48,7 +48,7 @@ divs = monitor_deg_dis(mix_sigs, 'ER', (ER_para, 1e-10), minlength=None)
 
 
 
-THRE = 0.01
+THRE = 0.1
 
 # The index of suspicious SIGs
 det_idx = [i for i, div in enumerate(divs) if div > THRE]
@@ -66,9 +66,9 @@ print(bot_adjs)
 # Step 3. Botnet Discovery
 ###############################################################
 
-pivot_th = 0.01
+pivot_th = 0.12
 
-cor_th = 0.005
+cor_th = 0.05
 
 w1 = 2
 w2 = 0.001
@@ -97,6 +97,17 @@ A = A[np.ix_(none_iso_nodes, none_iso_nodes)]
 inta = inta[none_iso_nodes]
 node_num = A.shape[0]
 
+print('none_iso_nodes are ')
+print(none_iso_nodes)
+
+print('node_num is ')
+print(node_num)
+
+print('number of non_iso_nodes is ')
+print(len(none_iso_nodes))
+
+# assert(1 == 2)
+
 
 print('--> start to generate csdp problem')
 P0, q0, W = com_det_reg(A, inta, w1, w2, lamb, out='./prob.sdpb')
@@ -110,7 +121,10 @@ print('--> start to parse csdp solution')
 Z, X = parse_CSDP_sol('botnet.sol', node_num + 1)
 solution = randomization(X, P0, q0, sn=10000)
 
+
 botnet_nodes_set = set(botnet_nodes)
+
+
 ref_sol = []
 for nv in none_iso_nodes:
     ip = mix_nodes[nv]
@@ -118,6 +132,7 @@ for nv in none_iso_nodes:
         ref_sol.append(1)
     else:
         ref_sol.append(0)
+
 
 def eval_obj(fea_sol):
     fea_sol = np.asarray(fea_sol)
@@ -146,6 +161,18 @@ print('inta_diff', inta_diff)
 botnet, = np.nonzero(solution > 0)
 print('[%i] ips out of [%i] ips are detected as bots' %
       (len(botnet), node_num))
+
+print('botnet nodes are: ')
+print(botnet)
+
+botnet_nodes_list = []
+for i in botnet:
+    botnet_nodes_list.append(none_iso_nodes[i])
+
+print('botnet nodes ids are: ')
+print(botnet_nodes_list)
+
+print(len(botnet_nodes_list))
 
 
 tr = dict(A=A, solution=solution, mix_nodes=mix_nodes,
