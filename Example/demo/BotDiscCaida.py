@@ -14,9 +14,9 @@ import networkx as nx
 bg_sigs, bg_nodes = parseToCoo('capture20110816.binetflow.slice_13_1.sigs',
         undirected=True)
 
-bg_sigs = bg_sigs[1:10]
+bg_sigs = bg_sigs[100:300]
 
-deg_samples = mg_sample(len(bg_nodes), bg_sigs, 9, 20)
+deg_samples = mg_sample(len(bg_nodes), bg_sigs, 200, 100)
 ER_para, ER_lk = mle(deg_samples, 'ER')
 
 print(ER_para, ER_lk)
@@ -48,7 +48,7 @@ divs = monitor_deg_dis(mix_sigs, 'ER', (ER_para, 1e-10), minlength=None)
 
 
 
-THRE = 0.1
+THRE = 0.05
 
 # The index of suspicious SIGs
 det_idx = [i for i, div in enumerate(divs) if div > THRE]
